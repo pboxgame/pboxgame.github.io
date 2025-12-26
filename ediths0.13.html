@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>действия и Edith</title>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="expires" content="0">
+    <style>
+        b {
+            font-weight: 700;
+        }
+        .icon {
+            width:48px;
+            height: 32px;
+            transform: scale(3);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1 class="pink">создание своих действий</h1>
+        <div class="ver_nav">
+            <div><a href="ediths0.12.php">v0.12</a> </div>
+            <div class="select"><h4 style="margin:0;">v 0.13</h4></div>
+            <div><a href="ediths0.14.html">v.0.14</a></div>
+        </div>
+        <h2>коротко</h2>
+        <a href="https://docs.google.com/spreadsheets/d/1ktXstvHsCjkmym_s3IjyecAlcgcj_3Qz_zjqoK4Dchg/edit?usp=sharing">Шаблон для создания своих действий</a>
+        <p>Для создания действий есть гугл-табличка, в которой можно ввести все нужные данные и на выход получить строку для игровой консоли.</p>
+        <table>
+            <tr>Что в шаблоне:
+                    <br>
+                    <img src="images/edith1.png" alt="">
+                    <br><br>
+            </tr>
+            <tr>
+                    Что оно значит:
+                    <br>
+                    <img src="images/edith2.png" alt="">
+            </tr>
+        </table>
+        <h2>ого круто, подробнее?</h2>
+        <p>Каждое действие состоит из шагов. Шаги называются Edith (в честь такой же системы из The Sims 1).
+       </p>
+
+       <p>Структура действия, Action:</p>
+        <div class="code">
+            class Action:  <br>
+            &nbsp;&nbsp;&nbsp;var ediths = [] <br>
+            &nbsp;&nbsp;&nbsp;var needs = [] <br>
+            &nbsp;&nbsp;&nbsp;var furn = [] <br>
+            &nbsp;&nbsp;&nbsp;var id = 0 <br>
+            &nbsp;&nbsp;&nbsp;var status = "" 
+        </div>
+        <table>
+            <tr>
+                <td>ediths</td>
+                <td>Список шагов, которые содержит это действие (см. далее)</td>
+            </tr>
+            <tr>
+                <td>needs</td>
+                <td>Список параметров, при критическом уровне которых человек обратится к этому действию</td>
+            </tr>
+            <tr>
+                <td>furn</td>
+                <td>Список типов мебели, которые нужны для выполнения этого действия</td>
+            </tr>
+            <tr>
+                <td>id</td>
+                <td>ID этого действия в игровом мире</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>Название действия, которое будет видно игроку (например, "упражняется на тренажере" или "читает книгу")</td>
+            </tr>
+            </table>
+            <br>
+       <p>Структура Edith:</p>
+        <div class="code">
+            class Edith: <br>
+            &nbsp;&nbsp;&nbsp;var id = 0<br>
+            &nbsp;&nbsp;&nbsp;var true_id = 0 <br>
+            &nbsp;&nbsp;&nbsp;var false_id = 0<br>
+            &nbsp;&nbsp;&nbsp;var rule = Rule.Null<br>
+            &nbsp;&nbsp;&nbsp;var rule_value = "0"<br>
+        </div>
+        <table>
+            <tr>
+                <td>id</td>
+                <td>Порядковый номер этого конкретного шага</td>
+            </tr>
+            <tr>
+                <td>true_id</td>
+                <td>Номер следующего шага, если rule выполнится успешно</td>
+            </tr>
+            <tr>
+                <td>false_id</td>
+                <td>Номер следующего шага, если rule выполнится не успешно</td>
+            </tr>
+            <tr>
+                <td>rule</td>
+                <td>Действие, которое нужно выполнить человеку на этом конкретном шаге</td>
+            </tr>
+            <tr>
+                <td>rule_value</td>
+                <td>Аргументы для выполнения действия (требуются не всегда)</td>
+            </tr>
+            </table>
+            <br>
+            <p>Возможные действия (Rule) в рамках Edith:</p>
+
+
+
+
+
+            <table>
+                <tr>
+                        <td><b>Аргументы</b></td>
+                        <td><b>Описание</b></td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>AddRole <img src="images/numbers/House number-38.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>sys</i>, номер системы, номер винта, например <br><br>
+                        <i>sys 2 0</i></td>
+                    <td>Добавляет человеку новую роль. Если роль временна (например, покупатель и т.д.), 
+                        стоит указать <i>-1</i> в качестве третьего аргумента
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>AddToInventory <img src="images/numbers/House number-18.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип_мебели (int), вид_мебели (int), параметры (перечисление формата "<i>key value</i>", опционально)
+                        <br><br>например, "<i>201 1 seeds 100 money 500</i>"
+                    <td>
+                        Передает в инвентарь человеку предмет мебели. К предмету мебели можно опционально придать параметры перечислением, 
+                        в примере слева создастся мешок кофейных зерен, в котором 100 зерен и который стоит 500 денег. 
+                        <ul>
+                            <li>
+                                Если человек получил предмет в свое свободное время, то предмет перейдет к нему в инвентарь.
+                            </li>
+                            <li>
+                                Если человек в этот момент работал и был винтом системы, предмет перейдет в инвентарь системы.
+                            </li>
+                        </ul>
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </td>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>Alert <img src="images/numbers/House number-7.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">текст для отображения</td>
+                    <td>Отображает около человека текст, в основном используется для обозначения речи. 
+                        Текст каждый раз затирается после Edith.Finish
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>Buy <img src="images/numbers/House number-43.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">
+                        <ol>
+                            <li>тип мебели</li>
+                            <li>вид мебели</li>
+                            <li>кол-во мебели</li>
+                            <li>параметр человека р1</li>
+                            <li>параметр мебели р2</li>
+                            <li>параметр мебели р3</li>
+                            <li>множитель m (опционально)</li>
+                        </ol>
+                    например, <i>304 1 3 budget price markup 0.95</i></td>
+                    <td>Производит покупку предмета мебели человеком из другого предмета 
+                        (например, со стеллажа), берет оплату из параметра р1 покупателя и переводит оплату в 
+                        параметр р1 человека, который является 0-м винтом системы systemAct.
+                        <br><br>
+                        Формула оплаты: <br>
+                        <i>
+                            p1 -= m*p2*p3
+                        </i>
+                        <br><br><b>Условия успеха (важны все сразу):</b>
+                        <ul>
+                            <li>В предмете, из которого берется покупка (например стеллаж), есть искомый покупаемый предмет и его количества достаточно для покупки</li>
+                            <li>У стеллажа есть маркер <i>property</i> с номером системы, которой он принадлежит или systemAct у действия не равен -1</li>
+                        </ul>
+                        <br><b>Условия неудачи:</b>
+                        <ul>
+                            <li>Не нашлось предмета (стеллажа и т.п.) с искомым предметом в достаточном количестве</li>
+                            <li>Невозможно установить, какой системе нужно переводить деньги за оплату</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>ChangeObjType <img src="images/numbers/House number-33.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип мебели, вид мебели<br> например, <i>0 1</i></td>
+                    <td>Меняет объект мебели action.furn_id на объект с указанным типом и видом
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>CheckDiscourse <img src="images/numbers/House number-37.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">объект мнения, тип мнения<br> например, <i>soc is_useful</i></td>
+                    <td>Проверяет мнение по заданной теме. На вход первым параметром помимо обычных имен может принимать шорткаты:
+                        <ul>
+                            <li><b>soc</b> – объектом мнения будет система systemAct</li>
+                            <li><b>f</b> – объектом мнения будет предмет мебели action.furn_id</li>
+                            <li><b>a</b> – объектом мнения будет выполняемое в данный момент действие</li>
+                        </ul>
+                        <br><b>Условие успеха:</b>
+                        <br>Мнение оказалось true или такого мнения нет<br>
+                        <br><b>Условие неудачи:</b><br>
+                        Запрашиваемое мнение оказалось falsе
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>Cry <img src="images/numbers/House number-25.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">время_в_сек (float), например "<i>5.0</i>"</td>
+                    <td>
+                        Используется, если невозможно выполнить действие (Action), когда например, нет нужного предмета мебели и т.п. Должно быть добавлено в Action вручную. Человек какое-то время "ноет" и восполняет потребность, с которой был связан Action на минимально возможный уровень чуть больше критического, чтобы не циклиться на этой потребности некоторое время
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>ExtractInfo <img src="images/numbers/House number-23.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">
+                        local_ID_человека (int)
+                    </td>
+                    <td>
+                        Перенять от собеседника новое мнение
+                        <br><br><b>Всегда успешный исход</b>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>Finish <img src="images/numbers/House number-1.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>нет</i></td>
+                    <td>Конец действия. В каждом действии является самым последним шагом.
+                        <br><br><b>Всегда успешный исход, в качестве true_id и false_id указывается номер этого же шага</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnInnerChange <img src="images/numbers/House number-29.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип мебели, вид мебели, кол-во мебели <br><br>например, 
+                    <i>203 1 2</i></td>
+                    <td>
+                        Меняет количество вложенных предметов мебели у предмета мебели action.furn_id
+                        <br>
+                        <br><b>Успешно всегда, кроме двух условий неудачи:</b><br>
+                        <ul>
+                            <li>action.furn_id == -1</li>
+                            <li>При вычитании предметов кол-во вложенных получается меньше нуля</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnInnerCheck <img src="images/numbers/House number-30.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип мебели, вид мебели, кол-во мебели <br><br>например, 
+                    <i>203 1 2</i></td>
+                    <td>
+                        Проверяет количество вложенных предметов мебели у предмета мебели action.furn_id
+                        <br>
+                        <br><b>Успешно всегда, кроме условия неудачи:</b><br>
+                        Недостаточно вложенных предметов данного типа
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnInnerGrab <img src="images/numbers/House number-42.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип мебели, вид мебели, кол-во мебели <br><br>например, 
+                    <i>203 1 2</i></td>
+                    <td>
+                        Взять из объекта action.furn_id заданное количество вложенных объектов данного типа.
+                        Если человек в данный момент находится в статусе винта системы, то полученные объекты 
+                        уходят на баланс системы, иначе в инвентарь человека.
+                        <br>
+                        <br><b>Успешно всегда, кроме условия неудачи:</b><br>
+                        Недостаточно вложенных предметов данного типа
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <s><h2>FurnInnerGrabAll <img src="images/numbers/House number-32.svg" class="icon" alt=""></h2></s>
+                        <p class="disclaimer">Deprecated or unstable.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип мебели, вид мебели<br><br>например, 
+                    <i>203 1</i></td>
+                    <td>
+                        Взять из объекта action.furn_id все вложенные объекты данного типа.
+                        Если человек в данный момент находится в статусе винта системы, то полученные объекты 
+                        уходят на баланс системы, иначе в инвентарь человека.
+                        <br>
+                        <br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnInnerPut <img src="images/numbers/House number-35.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип мебели [...] <br><br>например, 
+                    <i>203 204 205</i></td>
+                    <td>
+                        Hа вход подаются типы мебели, которые надо сгрузить в этот предмет.
+                        <br>
+                        <br><b>Успешно всегда, кроме условия неудачи:</b><br>
+                        action.furn_id == -1
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnInnerPutAll <img src="images/numbers/House number-34.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип мебели, кол-во мебели [...] <br><br>например, 
+                    <i>203 2 204 1 205 5</i></td>
+                    <td>
+                        Hа вход подаются типы и количество мебели (К - З), которые надо сгрузить в этот предмет
+                        <br>
+                        <br><b>Успешно всегда, кроме условия неудачи:</b><br>
+                        action.furn_id == -1
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnParamChange <img src="images/numbers/House number-13.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), уровень_параметра (int)
+                        <br><br>например, "<i>seeds 200</i>"
+                    <td>
+                        Изменяет значение параметра у предмета мебели, который используется в рамках этого действия.
+                        <br>Предмет закрепляется к действию, как правило, после прохождения шага <i>GoToObj</i>
+                        <br><br><b>Успешный исход</b> если удалось прибавить/убавить параметр у предмета или у предмета нет запрашиваемого параметра
+                        <br><br><b>Условие неудачи:</b>
+                        <ul>
+                            <li>При вычитании параметра получилось отрицательное значение</li>
+                        </ul>
+                    </td>
+                </td>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnParamLessThan <img src="images/numbers/House number-15.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), уровень_параметра (int)
+                        <br><br>например, "<i>seeds 200</i>"
+                    <td>
+                        Проверяет параметр у предмета мебели action.furn_id. 
+                        <br><b>Всегда успешно, кроме случая, когда параметр больше, чем искомый уровень</b>
+                    </td>
+                </td>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnParamMoreThan <img src="images/numbers/House number-16.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), уровень_параметра (int)
+                        <br><br>например, "<i>seeds 200</i>"
+                    <td>
+                        Проверяет параметр у предмета мебели action.furn_id. 
+                        <br><b>Всегда успешно, кроме случая, когда параметр меньше, чем искомый уровень</b>
+                    </td>
+                </td>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnParamRandomChange <img src="images/numbers/House number-14.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), мин_уровень_параметра (int), макс_уровень_параметра (int)
+                        <br><br>например, "<i>seeds 100 300</i>"
+                    <td>
+                        Изменяет значение параметра на рандомное значение у предмета мебели, который используется в рамках этого действия.
+                        <br>Предмет закрепляется к действию, как правило, после прохождения шага <i>GoToObj</i>
+                        <br><br><b>Успешный исход</b> если удалось прибавить/убавить параметр у предмета
+                        <br><br><b>Условие неудачи:</b> у предмета нет запрашиваемого параметра
+                    </td>
+                </td>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>FurnParamSet <img src="images/numbers/House number-17.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), уровень_параметра (int)
+                        <br><br>например, "<i>seeds 100</i>"
+                    <td>
+                        Устанавливает значение параметра у предмета мебели, который используется в рамках этого действия.
+                        <br>Предмет закрепляется к действию, как правило, после прохождения шага <i>GoToObj</i>
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </td>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>GoToHuman <img src="images/numbers/House number-3.svg" class="icon" alt=""></h2>
+                        <p class="disclaimer">Не доработано, не рекомендуется к использованию. Позже будет разделено на несколько разных типов для поиска человека по критериям.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">local_ID_человека (int)</td>
+                    <td>Поиск человека по его ID. Если такой найден, то человек идет до него и переходит на следующий шаг действия.
+                        <br><br><b>Условие успешности:</b>
+                        <br>Человек с таким ID есть
+                        <br><b>Условие неудачи:</b>
+                        <br>Человекa с таким ID нет
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>GoToObj <img src="images/numbers/House number-2.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">ID_типа_мебели (int)</td>
+                    <td>Поиск нужного <b>ближайшего</b> предмета мебели. Если такой найден, то человек идет до него и переходит на следующий шаг действия.
+                        <br><br><b>Условие успешности:</b>
+                        <br>Предмет с таким типом найден и не занят другим человеком
+                        <br><b>Условие неудачи:</b>
+                        <br>Предмета с таким типом нет
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>GoToRandomObj <img src="images/numbers/House number-31.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">ID_типа_мебели (int)</td>
+                    <td>Поиск нужного <b>рандомного</b> предмета мебели. Если такой найден, то человек идет до него и переходит на следующий шаг действия.
+                        <br><br><b>Условие успешности:</b>
+                        <br>Предмет с таким типом найден и не занят другим человеком
+                        <br><b>Условие неудачи:</b>
+                        <br>Предмета с таким типом нет
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>GoToRoom <img src="images/numbers/House number-4.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">ID_комнаты (int)</td>
+                    <td>Принимает на вход номер комнаты, который нужен, пока что ищет по маркерам номеров комнат
+                        <br><br><b>Условие успешности:</b>
+                        <br>Такая комната есть
+                        <br><b>Условие неудачи:</b>
+                        <br>Такой комнаты нет
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>GoToSystemWith <img src="images/numbers/House number-36.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">тип_мебели (int)</td>
+                    <td>Поиск системы с нужным нам типом мебели и установка ID этой системы в качестве systemID у человека
+                        <br><br><b>Условие успешности:</b>
+                        <br>Такая cистема есть и у нее есть хотя бы один адрес с соотв. маркером комнаты
+                        <br><b>Условие неудачи:</b>
+                        <br>Такой системы нет
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <s><h2>Greet <img src="images/numbers/House number-21.svg" class="icon" alt=""></h2></s>
+                        <p class="disclaimer">Deprecated</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>нет</i>
+                    </td>
+                    <td>
+                        Не делает ничего.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>GreetRandom <img src="images/numbers/House number-22.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>нет</i>
+                    </td>
+                    <td>
+                        Стать знакомыми с рандомным человеком. В случае успеха у человека и его собеседника появится новое отношение типа Acquaintance.
+                        <br><br><b>Условие успешности:</b>
+                        <br>Произошло знакомство
+                        <br><b>Условие неудачи:</b>
+                        <br>Человек единственный во всем мире
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <s><h2>MakeScrew <img src="images/numbers/House number-28.svg" class="icon" alt=""></h2></s>
+                        <p class="disclaimer">Deprecated</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>нет</i>
+                    </td>
+                    <td>
+                        Не делает ничего.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>NextAction <img src="images/numbers/House number-26.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">
+                        action_ID (int...)
+                    </td>
+                    <td>
+                        Завершить это действие (Action) и перейти сразу к другому. Может принимать несколько 
+                        действий через пробел, например "<i>302 303 304</i>", тогда выберется рандомное из списка.
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>Null</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>нет</i></td>
+                    <td>Просто Null действие, на случай если что-то пойдет не так.
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>OpinionExchange <img src="images/numbers/House number-24.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">
+                        local_ID_человека (int)
+                    </td>
+                    <td>
+                        Обменяться с собеседником мнением на какую-то тему. Если собеседник обладает авторитетом или состоит в авторитетной системе, человек переймет себе его мнение; иначе человек переймет строго противоположное мнение.
+                        <br><br><b>Условие успешности:</b>
+                        <br>Собеседник авторитетный, мнение перенято
+                        <br><b>Условие неудачи:</b>
+                        <br>Собеседник не авторитетный, принятое противоположное от его мнение
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>ParamChange <img src="images/numbers/House number-11.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), уровень_параметра (int)
+                        <br><br>например, "<i>hunger -15</i>"
+                    </td>
+                    <td>
+                        Изменить человеку указанный параметр на указанный уровень. Также принимает отрицательные числа.
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>ParamLessThan <img src="images/numbers/House number-9.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), уровень_параметра (int)
+                        <br><br>например, "<i>hunger 50</i>"
+                    </td>
+                    <td>
+                        <br><br><b>Условие успешности:</b>
+                        <br>У человека уровень указанного параметр ниже, чем уровень, переданный в аргументах
+                        <br><b>Условие неудачи:</b>
+                        <br>У человека уровень указанного параметр выше или равен, чем уровень, переданный в аргументах
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>ParamMoreThan <img src="images/numbers/House number-10.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), уровень_параметра (int)
+                        <br><br>например, "<i>hunger 50</i>"
+                    </td>
+                    <td>
+                        <br><br><b>Условие успешности:</b>
+                        <br>У человека уровень указанного параметр выше или равен, чем уровень, переданный в аргументах
+                        <br><b>Условие неудачи:</b>
+                        <br>У человека уровень указанного параметр ниже, чем уровень, переданный в аргументах
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>ParamSet <img src="images/numbers/House number-12.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_параметра (string), уровень_параметра (int)
+                        <br><br>например, "<i>hunger 50</i>"
+                    </td>
+                    <td>
+                        Присвоить человеку новый уровень указанного параметра
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <s><h2>Pay <img src="images/numbers/House number-41.svg" class="icon" alt=""></h2></s>
+                        <p class="disclaimer">Deprecated</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>нет</i>
+                    </td>
+                    <td>
+                        Должен быть альтернативной версией Buy, где можно получать товары не только на баланс человека,
+                        но и системы. Скорее всего не будет допилен
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>PoseChange <img src="images/numbers/House number-19.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">название_позы (string)
+                        <br><br>всегда либо "<i>standing</i>", либо "<i>sitting</i>", либо "<i>ding</i>".
+                    </td>
+                    <td>
+                        Изменить позу внешнего вида человека.
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>RandomChance <img src="images/numbers/House number-8.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">вероятность (int, от 0 до 100)</td>
+                    <td>Рандомный шанс выполнения следующего действия.
+                        <br><br><b>Если рандомное число оказалось меньше указанной вероятности, происходит переход на true_id действие, иначе false_id действие</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>RemoveRole <img src="images/numbers/House number-39.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>sys</i>, номер системы, номер винта, например <br><br>
+                        <i>sys 2 0</i></td>
+                    <td>Убирает человеку роль. Если роль временна (например, покупатель и т.д.), 
+                        можно просто передать "<i>-1</i>" как единственный аргумент.
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>Start <img src="images/numbers/House number.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params"><i>нет</i></td>
+                    <td>Старт действия. В каждом действии является самым первым шагом, точкой входа.
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>StopHuman <img src="images/numbers/House number-5.svg" class="icon" alt=""></h2>
+                        <p class="disclaimer">Не доработано, не рекомендуется к использованию. Позже будет разделено на несколько разных типов для поиска человека по критериям.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">local_ID_человека (int)</td>
+                    <td>Остановить человека по его ID. При успешном выполнении человек с заданным ID бросает все свои действия и идет навстречу человеку, от которого пришло это правило.
+                        <br><br><b>Условие успешности:</b>
+                        <br>Человек с таким ID есть
+                        <br><b>Условие неудачи:</b>
+                        <br>Человекa с таким ID нет
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>ThreeParamChangeTwoFurn <img src="images/numbers/House number-40.svg" class="icon" alt=""></h2>
+                        <p class="disclaimer">Возможно будет заменен</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">p1 (int), p2 (int), p3 (int), m (float)
+                        <br><br>
+                        <ul>
+                            <li>p1 - основной изменяемый параметр</li>
+                            <li>р2 - множитель, параметр мебели</li>
+                            <li>p3 - множитель, параметр мебели</li>
+                            <li>m - коэффициент (float), на который умножается инкремент </li>
+                        </ul>
+                    </td>
+                    <td>
+                        Изменяет параметр человека, используя параметры объекта action.furn_id
+                        <br>Формула изменения параметра человека: <br>
+                        <i>
+                            p1 += m*p2*p3
+                        </i>
+                        <br><br><b>Всегда успешный исход, кроме случая, когда action.furn_id == -1</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>TwoParamChange <img src="images/numbers/House number-20.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">p1 (int), p2 (int), m (float)
+                        <br><br>
+                        <ul>
+                            <li>p1 - основной изменяемый параметр</li>
+                            <li>р2 - инкремент, тоже параметр человека</li>
+                            <li>m - коэффициент (float), на который умножается инкремент </li>
+                        </ul>
+                    </td>
+                    <td>
+                        Инкрементирует параметр человека, используя другой параметр человека и множитель
+                        <br>Формула изменения параметра человека: <br>
+                        <i>
+                            p1 += p2*m
+                        </i>
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="uidesc" colspan="3">
+                        <h2>Wait <img src="images/numbers/House number-6.svg" class="icon" alt=""></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="params">время_в_сек (float)</td>
+                    <td>Подождать заданное количество секунд.
+                        <br><br><b>Всегда успешный исход</b>
+                    </td>
+                </tr>
+                
+                
+            </table>
+    </main>
+</body>
+
+</html>
