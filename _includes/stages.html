@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>этапы</title>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="expires" content="0">
+    <style>
+        b {
+            font-weight: 700;
+        }
+
+        s {
+            opacity: 0.6;
+        }
+
+        .edith_groups td,
+        .edith_main td {
+            width: 14rem;
+        }
+
+        .edith_groups td:first-child {
+            width: 20rem;
+        }
+
+        .edith_main td:last-child {
+            width: 50rem;
+        }
+
+        .icon {
+            width: 48px;
+            height: 32px;
+            transform: scale(3);
+        }
+
+        .icon2 {
+            width: 36px;
+            height: 16px;
+            transform: scale(5);
+        }
+
+        a:visited {
+            color: #3300FF;
+        }
+
+        .edith_groups .params,
+        .edith_main .params {
+            padding: 0.5rem 0.75rem;
+            background: #333;
+            color: white;
+        }
+
+        .btn:visited {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+    <h1 class="pink">этапы</h1>
+        <div class="ver_nav">
+            <div class="select"><h4 style="margin:0;">v 0.19</h4></div>
+        </div>
+        <!--<p>Если коротко, этапы нужны для постепенного открытия игровых фич/механик, а также для игровой прогрессии.
+        </p> -->
+        <h2 class="darkblue" style="margin-top: 4rem;">открытие игровых фич по этапам</h2>
+        <table>
+            <tr>
+                <td><b>Раздел</b></td>
+                <td><b>Открываемые фичи</b></td>
+            </tr>
+            <tr id="stage0">
+                <td class="uidesc" colspan="3">
+                    <h2><img src="images/numbers/House number-0.svg" class="icon" alt=""> начало</h2>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Основное
+                </td>
+                <td>
+                    <ul>
+                        <li>Можно создать только 1 человека</li>
+                        <li>Кнопка добавления человека: доступна</li>
+                        <li>Панель человека: недоступна</li>
+                        <li>Режим строительства: скрыт</li>
+                        <li>Редактор действий: скрыт</li>
+                        <li>Редактор систем: скрыт</li>
+                        <li>Панель туториалов: доступна</li>
+                        <li>Локация: белый дом на абсолютно черном фоне, нет травы и т.п.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Доступные туториалы
+                </td>
+                <td>
+                    <ul>
+                        <li>900 - Знакомство</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Панель человека
+                </td>
+                <td>
+                    закрыта
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Режим строительства
+                </td>
+                <td>
+                    закрыт
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Редактор действий
+                </td>
+                <td>
+                    закрыт
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Редактор систем
+                </td>
+                <td>
+                    закрыт
+                </td>
+            </tr>
+            <tr id="stage1">
+                <td class="uidesc" colspan="3">
+                    <h2><img src="images/numbers/House number.svg" class="icon" alt=""> первый человек</h2>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Основное
+                </td>
+                <td>
+                    <ul>
+                        <li>Можно создать только 1 человека</li>
+                        <li>Локация: белый дом на абсолютно черном фоне, нет травы и т.п.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Доступные туториалы
+                </td>
+                <td>
+                    <ul>
+                        <li>900 - Знакомство</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Панель человека
+                </td>
+                <td>
+                    Появляется. Доступные панели:
+                    <ul>
+                        <li>Основное: полностью, но адрес некликабелен</li>
+                        <li>Параметры: все, кроме кнопки добавления параметров (потребности в общении нет!)</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Режим строительства
+                </td>
+                <td>
+                    <ul>
+                        <li>
+                            Открывается редактор строительства
+                            <ul>
+                                <li>Скрыто редактирование стен, полов и дверей</li>
+                                <li>Скрыты инструменты (в т.ч. муз.блоки)</li>
+                            </ul>
+                        </li>
+                        <li><a href="images/furnsstage1.png">При выборе мебели доступен только набор мебели для первого этапа</a></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Редактор действий
+                </td>
+                <td>
+                    <ul>
+                        <li>
+                            Открывается редактор действий. Доступные Edith:
+                            <ul>
+                                <li>Основное: все, кроме <i>Уничтожить</i> и <i>Следующее действие</i></li>
+                                <li>Параметры: все, кроме <i>Изм. Н-Н1</i>, <i>Изм. Н-Н2</i>, <i>Изм. Р-Р1</i>, <i>Изм. Н-Р2</i></li>
+                                <li>Возраст: скрыта вся группа</li>
+                                <li>Системы: скрыта вся группа</li>
+                                <li>Отношения: скрыта вся группа</li>
+                                <li>Инвентарь: скрыта вся группа</li>
+                            </ul>
+                        </li>
+                        <li><a href="images/furnsstage1.png">При выборе мебели доступен только набор мебели для первого этапа</a></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Редактор систем
+                </td>
+                <td>
+                    закрыт
+                </td>
+            </tr>
+            <tr id="stage2">
+                <td class="uidesc" colspan="3">
+                    <h2><img src="images/numbers/House number-1.svg" class="icon" alt=""> социализация</h2>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Основное
+                </td>
+                <td>
+                    <ul>
+                        <li>Можно создать до 5 человек</li>
+                        <li>Локация меняется на обычную траву и небо</li>
+                        <li>Открывается меню диск. систем</li>
+                        <li>Открывается панель артефактов культуры</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Доступные туториалы
+                </td>
+                <td>
+                    <ul>
+                        <li>900 - Знакомство</li>
+                        <li>1000 - Социализация</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Панель человека
+                </td>
+                <td>
+                    Добавляются панели:
+                    <ul>
+                        <li>Параметры: появляется функция создания параметров</li>
+                        <li>Отношения: все функции</li>
+                        <li>Мнения: все функции</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Режим строительства
+                </td>
+                <td>
+                    <ul>
+                        <li>Открыт полный набор стен</li>
+                        <li>Открыт полный набор полов</li>
+                        <li>Открыт полный набор дверей</li>
+                        <li>Открыт полный набор мебели со всеми категориями</li>
+                        <li>Доступны инструменты (в т.ч. муз.блоки)</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Редактор действий
+                </td>
+                <td>
+                    <ul>
+                        <li>
+                            Новые доступные Edith:
+                            <ul>
+                                <li>Параметры: открываются <i>Изм. Н-Н1</i>, <i>Изм. Н-Н2</i>, <i>Изм. Р-Р1</i>, <i>Изм. Н-Р2</i></li>
+                                <li>Отношения: открывается вся группа</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Редактор систем
+                </td>
+                <td>
+                    закрыт
+                </td>
+            </tr>
+            <tr id="stage2">
+                <td class="uidesc" colspan="3">
+                    <h2><img src="images/numbers/House number-2.svg" class="icon" alt=""> производство</h2>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Основное
+                </td>
+                <td>
+                    ТВА
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Доступные туториалы
+                </td>
+                <td>
+                    <ul>
+                        <li>900 - Знакомство</li>
+                        <li>1000 - Социализация</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Панель человека
+                </td>
+                <td>
+                    Добавляются панели:
+                    <ul>
+                        <li>Инвентарь: все функции</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Редактор действий
+                </td>
+                <td>
+                    <ul>
+                        <li>
+                            Новые доступные Edith:
+                            <ul>
+                                <li>Основное: открываются <i>Уничтожить</i> и <i>Следующее действие</i></li>
+                                <li>Инвентарь: открывается вся группа</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="params">Редактор систем
+                </td>
+                <td>
+                    закрыт
+                </td>
+            </tr>
+        </table>
+        <p>Заметка по открытию Edith в редакторе действий:</p>
+        <img src="images/stagesedith.png" alt="">
+    </main>
+</body>
+
+</html>
